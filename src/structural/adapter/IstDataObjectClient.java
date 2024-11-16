@@ -1,7 +1,6 @@
 package structural.adapter;
 
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class IstDataObjectClient implements DataObjectDateAndTime {
 
@@ -15,14 +14,18 @@ public class IstDataObjectClient implements DataObjectDateAndTime {
     public DataObject getData() {
         DataObject object = dataObjectProvider.dataObject();
 
-        //convert utc to ist
+       /* //convert utc to ist
         ZonedDateTime utcTime = object.getUtcTimeAndDate().atZone(ZoneId.of("UTC"));
-        ZonedDateTime istTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        ZonedDateTime istTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));*/
 
         return new DataObject(
                 object.getName(),
                 object.getDescription(),
-                istTime.toLocalDateTime()
+                object.getUtcTimeAndDate()
+                        .atZone(ZoneId.of("UTC"))
+                        .withZoneSameInstant(ZoneId.of("Asia/Kolkata"))
+                        .toLocalDateTime()
+
         );
     }
 }
